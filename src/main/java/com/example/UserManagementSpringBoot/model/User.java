@@ -1,18 +1,12 @@
 package com.example.UserManagementSpringBoot.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity(name="user")
+@Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue
@@ -21,15 +15,55 @@ public class User {
     private String city;
     private boolean deleted;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = Course.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "course_follow",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
     )
     private Set<Course> followedCourses = new HashSet<>();
 
     public void followCourse(Course course){
         followedCourses.add(course);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Set<Course> getFollowedCourses() {
+        return followedCourses;
+    }
+
+    public void setFollowedCourses(Set<Course> followedCourses) {
+        this.followedCourses = followedCourses;
     }
 }

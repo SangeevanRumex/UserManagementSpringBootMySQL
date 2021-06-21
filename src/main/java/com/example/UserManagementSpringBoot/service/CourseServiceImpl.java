@@ -20,8 +20,8 @@ public class CourseServiceImpl implements CourseService{
     private ModelMapper modelMapper;
 
     @Override
-    public boolean addCourse(CourseDto courseDto) {
-        courseRepository.save(convertFromDto(courseDto));
+    public boolean addCourse(Course course) {
+        courseRepository.save(course);
         return true;
     }
 
@@ -41,10 +41,10 @@ public class CourseServiceImpl implements CourseService{
 //    }
 
     @Override
-    public CourseDto getCourseById(int id) {
-        Course oldCourse = courseRepository.getCourseById(id);
+    public Course getCourseById(int id) {
+        Course oldCourse = courseRepository.findById(id).orElse(null);
         if(oldCourse!=null) {
-            return convertToDto(courseRepository.getCourseById(id));
+            return oldCourse;
         }
         return null;
     }

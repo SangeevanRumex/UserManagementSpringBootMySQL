@@ -1,20 +1,13 @@
 package com.example.UserManagementSpringBoot.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity(name="course")
+@Entity
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue
@@ -23,6 +16,47 @@ public class Course {
     private int fee;
     private boolean deleted;
 
-    @ManyToMany(mappedBy = "followedCourses")
+    @JsonIgnore
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "followedCourses")
     private Set<User> follows = new HashSet<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public int getFee() {
+        return fee;
+    }
+
+    public void setFee(int fee) {
+        this.fee = fee;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Set<User> getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Set<User> follows) {
+        this.follows = follows;
+    }
 }

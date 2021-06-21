@@ -1,5 +1,6 @@
 package com.example.UserManagementSpringBoot.controller;
 
+import com.example.UserManagementSpringBoot.model.Course;
 import com.example.UserManagementSpringBoot.model.dto.CourseDto;
 import com.example.UserManagementSpringBoot.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping("/course")
-    public ResponseEntity<String> addCourse(@RequestBody CourseDto courseDto){
-        if(courseService.addCourse(courseDto)){
+    public ResponseEntity<String> addCourse(@RequestBody Course course){
+        if(courseService.addCourse(course)){
             return ResponseEntity.ok().body("Course successfully created");
         };
         return ResponseEntity.badRequest().body("Course not created");
@@ -43,7 +44,7 @@ public class CourseController {
 //    }
 
     @GetMapping("/course/{id}")
-    public ResponseEntity<CourseDto> getCourseById(@PathVariable("id") int id){
+    public ResponseEntity<Course> getCourseById(@PathVariable("id") int id){
         if (courseService.getCourseById(id)!=null) {
             return ResponseEntity.ok().body(courseService.getCourseById(id));
         }

@@ -16,36 +16,36 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<String> addUser(@RequestBody UserDto userDto){
-        if(userService.addUser(userDto)){
+    public ResponseEntity<String> addUser(@RequestBody User user){
+        if(userService.addUser(user)){
             return ResponseEntity.ok().body("User successfully created");
         };
         return ResponseEntity.badRequest().body("User not created");
     }
 
     @PutMapping("/user")
-    public ResponseEntity<String> updateUser(@RequestBody UserDto userDto){
-        if (userService.updateUser(userDto)){
+    public ResponseEntity<String> updateUser(@RequestBody User user){
+        if (userService.updateUser(user)){
             return ResponseEntity.ok().body("User successfully updated");
         };
         return ResponseEntity.badRequest().body("User not found");
     }
 
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") int id){
-        if (userService.deleteUser(id)){
-            return ResponseEntity.ok().body("User successfully deleted");
-        };
-        return ResponseEntity.badRequest().body("User not found");
-    }
+//    @DeleteMapping("/user/{id}")
+//    public ResponseEntity<String> deleteUser(@PathVariable("id") int id){
+//        if (userService.deleteUser(id)){
+//            return ResponseEntity.ok().body("User successfully deleted");
+//        };
+//        return ResponseEntity.badRequest().body("User not found");
+//    }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsers(){
+    public ResponseEntity<List<User>> getUsers(){
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") int id){
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id){
         if (userService.getUserById(id)!=null) {
             return ResponseEntity.ok().body(userService.getUserById(id));
         }

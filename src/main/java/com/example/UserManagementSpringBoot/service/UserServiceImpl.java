@@ -24,50 +24,56 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
     @Override
-    public boolean addUser(UserDto userDto){
-        userRepository.save(convertFromDto(userDto));
+    public boolean addUser(User user){
+        userRepository.save(user);
         return true;
     }
 
     @Override
-    public boolean updateUser(UserDto userDto) {
-        User oldUser = userRepository.getUserById(userDto.getId());
+    public boolean updateUser(User user) {
+        User oldUser = userRepository.findById(user.getId()).orElse(null);
         if(oldUser!=null){
-            userRepository.save(convertFromDto(userDto));
+            userRepository.save(user);
             return true;
         }
         return false;
     }
 
+//    @Override
+//    public boolean deleteUser(int id) {
+//        User oldUser = userRepository.getUserById(id);
+//        if(oldUser!=null) {
+//            userRepository.deleteUser(id);
+//            return true;
+//        }
+//        return false;
+//    }
+
     @Override
-    public boolean deleteUser(int id) {
-        User oldUser = userRepository.getUserById(id);
-        if(oldUser!=null) {
-            userRepository.deleteUser(id);
-            return true;
-        }
-        return false;
+    public List<User> getUsers() {
+//        List<User> users = userRepository.getUsers();
+        List<User> users = userRepository.findAll();
+        return users;
+//        return users.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDto> getUsers() {
-        List<User> users = userRepository.getUsers();
-        return users.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserDto getUserById(int id) {
-        User oldUser = userRepository.getUserById(id);
+    public User getUserById(int id) {
+//        User oldUser = userRepository.getUserById(id);
+        User oldUser = userRepository.findById(id).orElse(null);
         if(oldUser!=null) {
-            return convertToDto(userRepository.getUserById(id));
+            return oldUser;
+//            return convertToDto(userRepository.getUserById(id));
         }
         return null;
     }
 
     @Override
     public boolean followCourse(int userId, int courseId) {
-        User oldUser = userRepository.getUserById(userId);
-        Course oldCourse = courseRepository.getCourseById(courseId);
+//        User oldUser = userRepository.getUserById(userId);
+        User oldUser = userRepository.findById(userId).orElse(null);
+        Course oldCourse = courseRepository.findById(courseId).orElse(null);
+//        Course oldCourse = courseRepository.getCourseById(courseId);
         oldUser.followCourse(oldCourse);
         if(oldUser!=null){
             userRepository.save(oldUser);
